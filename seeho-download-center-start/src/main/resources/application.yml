@@ -1,0 +1,86 @@
+spring:
+  application:
+    name: seeho-download-center
+  profiles:
+    active: ${ENV:dev}
+  
+  # ============ 数据源配置 ============
+  # 默认使用 H2 内存数据库（适合开发/测试环境）
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:downloadcenter;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+    username: sa
+    password:
+    # H2 控制台配置（开发环境可访问 http://localhost:8080/h2-console）
+    h2:
+      console:
+        enabled: true
+        path: /h2-console
+        settings:
+          web-allow-others: false
+
+  # 数据库初始化配置（自动执行 schema.sql 和 data.sql）
+  # H2 模式下会自动创建表结构，MySQL 模式下可根据需要设置为 always 或 never
+  sql:
+    init:
+      mode: always  # H2 使用 always，MySQL 建议使用 never 或手动执行 SQL
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      continue-on-error: false
+
+  # ============ 切换到 MySQL 数据库的配置方案 ============
+  # 
+  # 步骤 1：修改 pom.xml（seeho-download-center-persistence/pom.xml）
+  #    - 注释掉 H2 依赖
+  #    - 取消注释 MySQL 依赖
+  #
+  # 步骤 2：修改本配置文件，将上面的 datasource 配置替换为：
+  #  datasource:
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    url: jdbc:mysql://localhost:3306/seeho_download_center?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
+  #    username: root
+  #    password: your_password
+  #    # 移除 h2.console 配置（H2 专有）
+  #
+  # 步骤 3：修改 sql.init.mode（根据实际情况选择）
+  #  sql:
+  #    init:
+  #      mode: never  # MySQL 通常手动管理数据库，或者设置为 always 自动执行 schema.sql
+  #
+  # 步骤 4：确保 MySQL 数据库已创建
+  #  CREATE DATABASE IF NOT EXISTS seeho_download_center CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  #
+  # 完整 MySQL 配置示例：
+  #  datasource:
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    url: jdbc:mysql://localhost:3306/seeho_download_center?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
+  #    username: root
+  #    password: your_password
+  #  sql:
+  #    init:
+  #      mode: always  # 或 never
+  #      schema-locations: classpath:schema.sql
+  #      data-locations: classpath:data.sql
+  #      continue-on-error: false
+
+# MyBatis Plus 配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 开发环境可以开启 SQL 日志
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+download:
+  task:
+    queue:
+      mode: memory       # 内存队列模式:memory  消息中间件:mq
+      capacity: 500      # 队列容量
+    consumer:
+      thread-count: 2    # 消费者线程数
+  export:
+    base-path: /data/export  # 开发环境使用临时目录
+    date-format: yyyy-MM     # 日期分目录格式（按月）
