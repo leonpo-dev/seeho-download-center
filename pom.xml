@@ -31,12 +31,12 @@
         <lombok.version>1.18.32</lombok.version>
         <easyexcel.version>3.3.2</easyexcel.version>
         <mybatis.plus.version>3.5.12</mybatis.plus.version>
-        <!-- H2 版本由 Spring Boot Parent 管理，无需显式指定 -->
+        <!-- H2 version is inherited from Spring Boot parent -->
         <mysql.driver.version>8.0.33</mysql.driver.version>
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
     </properties>
 
-    <!-- 管理 download-center 模块族内部的版本 -->
+    <!-- Manage versions across the module family -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -59,7 +59,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
-                <scope>provided</scope> <!-- 编译期依赖，运行时无需打包 -->
+                <scope>provided</scope> <!-- compile-time only -->
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>

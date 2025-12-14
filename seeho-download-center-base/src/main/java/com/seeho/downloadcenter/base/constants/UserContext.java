@@ -1,8 +1,7 @@
 package com.seeho.downloadcenter.base.constants;
 
 /**
- * @author Leonpo
- * @since 2025-12-14
+ * Temporary demo user context placeholder.
  */
 public class UserContext {
 

@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope> <!-- 编译期依赖，运行时无需打包 -->
+            <scope>provided</scope> <!-- compile-time only -->
         </dependency>
     </dependencies>
 </project>

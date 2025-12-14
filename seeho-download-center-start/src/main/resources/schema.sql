@@ -1,9 +1,4 @@
--- ============================================
--- 数据库表结构初始化脚本
--- 适用于 H2 和 MySQL 数据库（H2 兼容 MySQL 模式）
--- ============================================
-
--- 下载日志表
+-- Schema bootstrap script for H2/MySQL (H2 runs in MySQL compatibility mode).
 CREATE TABLE IF NOT EXISTS download_log (
     id BIGINT NOT NULL AUTO_INCREMENT,
     download_name VARCHAR(255) NOT NULL,
@@ -25,9 +20,8 @@ CREATE TABLE IF NOT EXISTS download_log (
     PRIMARY KEY (id)
 );
 
--- 创建索引（H2 和 MySQL 兼容）
+-- Secondary indexes shared by H2 and MySQL.
 CREATE INDEX IF NOT EXISTS idx_user_id ON download_log(user_id);
 CREATE INDEX IF NOT EXISTS idx_download_status ON download_log(download_status);
 CREATE INDEX IF NOT EXISTS idx_message_key ON download_log(message_key);
 CREATE INDEX IF NOT EXISTS idx_create_time ON download_log(create_time);
-

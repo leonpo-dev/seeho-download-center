@@ -3,10 +3,7 @@ package com.seeho.downloadcenter.domain.utils;
 import java.util.Collection;
 
 /**
- * 集合工具类
- *
- * @author Leonpo
- * @since 2025-12-02
+ * Convenience helpers for collection null checks.
  */
 public class CollectionUtils {
 
@@ -18,4 +15,3 @@ public class CollectionUtils {
         return !isEmpty(collection);
     }
 }
-

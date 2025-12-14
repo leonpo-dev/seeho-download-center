@@ -12,64 +12,30 @@ import java.util.List;
 
 public interface DownloadLogMangerService {
 
-    /**
-     * 创建导出任务
-     *
-     * @param downloadLogDTO 下载日志DTO
-     * @return 创建的任务ID
-     */
+    /** Creates a new download/export task. */
     Long createExportTask(DownloadLogDTO downloadLogDTO);
 
-    /**
-     * 查询导出任务列表
-     *
-     * @param queryDownloadDTO 查询参数
-     * @return 导出任务列表
-     */
+    /** Queries paged download task list for the current user. */
     PageResult<DownloadListDTO> queryExportTask(QueryDownloadDTO queryDownloadDTO);
 
 
-    /**
-     * 根据messageKey查询下载日志
-     *
-     * @param messageKey 消息Key
-     * @return 下载日志
-     */
-    DownloadLogPO queryDownloadLogByMessageKey(String messageKey);
+    /** Looks up a log entry by the MQ message key. */
+   DownloadLogPO queryDownloadLogByMessageKey(String messageKey);
 
-    /**
-     * 更新下载日志状态
-     *
-     * @param id            下载日志ID
-     * @param newStatus     新状态
-     * @param desiredStatus 期望状态
-     * @return 更新结果
-     */
+    /** Updates a task status with optimistic checking. */
     Boolean updateDownloadLogStatus(Long id, DownloadStatusEnum newStatus, DownloadStatusEnum desiredStatus);
 
 
-    /**
-     * 更新下载日志
-     *
-     * @param downloadLogPO
-     * @return
-     */
+    /** Partially updates a log entry by ID. */
     Boolean updateDLPOById(DownloadLogPO downloadLogPO);
 
     Boolean checkFileExist(String filename);
 
     DownloadLogPO queryTaskById(Long logId);
 
-    /**
-     * 查询任务列表
-     * @param jobQueryDTO job查询参数
-     * @return
-     */
+    /** Queries tasks to refill the job queue. */
     List<DownloadLogPO> queryToTaskList(JobQueryDTO jobQueryDTO);
 
-    /**
-     * 尝试再次执行任务
-     * @param task
-     */
+    /** Re-enqueues a failed task. */
     void tryDoTaskAgain(DownloadLogPO task);
 }

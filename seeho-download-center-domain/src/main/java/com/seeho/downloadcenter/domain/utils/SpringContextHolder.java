@@ -8,11 +8,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * Spring容器工具类
- * 用于在非Spring管理的类中获取Spring容器中的Bean
- *
- * @author Leonpo
- * @since 2025-11-26
+ * Exposes the Spring {@link ApplicationContext} for non-managed components.
  */
 @Component
 public class SpringContextHolder implements ApplicationContextAware {
@@ -24,24 +20,11 @@ public class SpringContextHolder implements ApplicationContextAware {
         applicationContext = context;
     }
 
-    /**
-     * 获取ApplicationContext
-     *
-     * @return ApplicationContext实例
-     */
     public static ApplicationContext getApplicationContext() {
         assertContextInjected();
         return applicationContext;
     }
 
-    /**
-     * 根据Bean名称获取Bean
-     *
-     * @param beanName Bean名称
-     * @param <T>      Bean类型
-     * @return Bean实例
-     * @throws BusinessException 当Bean不存在或容器未初始化时
-     */
     @SuppressWarnings("unchecked")
     public static <T> T getBean(String beanName) {
         assertContextInjected();
@@ -52,14 +35,6 @@ public class SpringContextHolder implements ApplicationContextAware {
         }
     }
 
-    /**
-     * 根据Class类型获取Bean
-     *
-     * @param clazz Bean的Class类型
-     * @param <T>   Bean类型
-     * @return Bean实例
-     * @throws BusinessException 当Bean不存在或容器未初始化时
-     */
     public static <T> T getBean(Class<T> clazz) {
         assertContextInjected();
         try {
@@ -69,15 +44,6 @@ public class SpringContextHolder implements ApplicationContextAware {
         }
     }
 
-    /**
-     * 根据Bean名称和Class类型获取Bean
-     *
-     * @param beanName Bean名称
-     * @param clazz    Bean的Class类型
-     * @param <T>      Bean类型
-     * @return Bean实例
-     * @throws BusinessException 当Bean不存在或容器未初始化时
-     */
     public static <T> T getBean(String beanName, Class<T> clazz) {
         assertContextInjected();
         try {
@@ -88,11 +54,6 @@ public class SpringContextHolder implements ApplicationContextAware {
         }
     }
 
-    /**
-     * 断言ApplicationContext已注入
-     *
-     * @throws BusinessException 当ApplicationContext未初始化时
-     */
     private static void assertContextInjected() {
         Assert.notNull(applicationContext,
                 "ApplicationContext has not been injected, please check if SpringContextHolder is managed by Spring");

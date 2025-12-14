@@ -4,12 +4,7 @@ import com.seeho.downloadcenter.persistence.po.DownloadLogPO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
- * <p>
- * 文件下载日志记录表 服务类
- * </p>
- *
- * @author Leonpo
- * @since 2025-12-02
+ * MyBatis-Plus service facade for download_log.
  */
 public interface DownloadLogService extends IService<DownloadLogPO> {
 

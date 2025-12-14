@@ -7,12 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
- * 文件下载日志记录表 服务实现类
- * </p>
- *
- * @author Leonpo
- * @since 2025-12-02
+ * Default service implementation for {@link DownloadLogPO}.
  */
 @Service
 public class DownloadLogServiceImpl extends ServiceImpl<DownloadLogMapper, DownloadLogPO> implements DownloadLogService {

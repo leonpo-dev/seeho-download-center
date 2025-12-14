@@ -8,14 +8,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 /**
- * 基于 RocketMQ 的任务发送服务（测试/生产环境）
- * <p>
- * TODO: RocketMQ integration removed - this service is currently disabled.
- * Previously: 负责将任务发送到 RocketMQ 消息队列
- * </p>
- *
- * @author Leonpo
- * @since 2025-11-26
+ * Placeholder for the RocketMQ implementation.
+ * Currently disabled until the messaging integration is restored.
  */
 @Slf4j
 @Service

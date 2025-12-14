@@ -5,10 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * 日期时间工具类
- *
- * @author Leonpo
- * @since 2025-12-02
+ * Simple converters between temporal objects and formatted strings.
  */
 public class LocalDateTimeUtils {
 
@@ -28,4 +25,3 @@ public class LocalDateTimeUtils {
         return dateTime.format(formatter);
     }
 }
-

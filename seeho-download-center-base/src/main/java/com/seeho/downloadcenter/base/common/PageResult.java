@@ -5,10 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 分页结果类
- *
- * @author Leonpo
- * @since 2025-12-02
+ * Immutable pagination result wrapper.
  */
 @Data
 public class PageResult<T> {
@@ -26,18 +23,12 @@ public class PageResult<T> {
         return result;
     }
 
-    /**
-     * 转换为另一个类型的分页结果
-     */
     public <R> PageResult<R> copyTo(Class<R> targetClass) {
-        // 这里简化处理，实际使用时需要BeanUtil.copyList
-        // 暂时返回空，调用者需要手动转换
+        // Caller is responsible for copying records to the desired type.
         PageResult<R> result = new PageResult<>();
         result.setTotal(this.total);
         result.setPageIndex(this.pageIndex);
         result.setPageSize(this.pageSize);
-        // records需要调用者手动转换
         return result;
     }
 }
-

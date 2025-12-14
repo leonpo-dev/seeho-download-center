@@ -3,10 +3,7 @@ package com.seeho.downloadcenter.base.common;
 import lombok.Data;
 
 /**
- * 统一响应类
- *
- * @author Leonpo
- * @since 2025-12-02
+ * Lightweight API response wrapper.
  */
 @Data
 public class Response<T> {
@@ -37,4 +34,3 @@ public class Response<T> {
         return error(500, message);
     }
 }
-

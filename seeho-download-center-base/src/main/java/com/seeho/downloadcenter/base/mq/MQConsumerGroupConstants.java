@@ -1,8 +1,7 @@
 package com.seeho.downloadcenter.base.mq;
 
 /**
- * @author Leonpo
- * @since 2025-11-26
+ * Consumer group identifiers for MQ listeners.
  */
 public interface MQConsumerGroupConstants {
 

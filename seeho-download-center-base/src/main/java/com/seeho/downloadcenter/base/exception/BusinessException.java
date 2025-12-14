@@ -1,11 +1,7 @@
 package com.seeho.downloadcenter.base.exception;
 
 /**
- * 业务异常类
- * 用于表示业务逻辑错误，不应重试
- *
- * @author Leonpo
- * @since 2025-12-02
+ * Exception for business rule violations that should not be retried.
  */
 public class BusinessException extends RuntimeException {
 
@@ -17,4 +13,3 @@ public class BusinessException extends RuntimeException {
         super(message, cause);
     }
 }
-

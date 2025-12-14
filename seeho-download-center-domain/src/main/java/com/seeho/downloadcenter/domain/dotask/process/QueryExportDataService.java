@@ -20,70 +20,25 @@ import java.util.stream.Collectors;
 
 public interface QueryExportDataService<C extends PageRequest, R> {
 
-    /**
-     * 转换下载条件
-     *
-     * @param downloadCondition
-     * @return
-     */
+    /** Converts the persisted condition JSON into a query object. */
     C convertedDownloadCondition(String downloadCondition);
 
-    /**
-     * 查询导出数据总数
-     *
-     * @param condition
-     * @return
-     */
+    /** Counts the total number of rows for the export. */
     Long queryTotalCount(C condition);
 
-    /**
-     * 查询导出数据
-     *
-     * @param condition
-     * @return
-     */
+    /** Fetches a page of export data. */
     List<R> queryExportData(C condition);
 
-    /**
-     * 初始化二分查询条件工具类
-     *
-     * @param condition
-     * @return
-     */
+    /** Initializes the helper that splits large parameter sets. */
     ParamSplitUtils<C> initSplitUtils(C condition);
 
-    /**
-     * 获取导出数据的类型
-     * <p>
-     * 用于 Excel 表头生成，返回导出行 DTO 的 Class 对象
-     * </p>
-     *
-     * @return 导出行数据类型
-     */
+    /** Provides the DTO class used by the Excel writer. */
     Class<R> getExportDataClass();
 
-    /**
-     * 提供字段映射器（强制实现）
-     * <p>
-     * 由具体业务实现，定义 field → DTO取值 的映射关系
-     * </p>
-     *
-     * @return 字段映射器（field → 取值函数）
-     */
+    /** Maps field identifiers to DTO getters for dynamic exports. */
     Map<String, Function<R, Object>> getFieldMapper();
 
-    /**
-     * 解析动态表头（default 方法）
-     * <p>
-     * 通用逻辑：
-     * 1. 反序列化 titlesJson
-     * 2. 过滤 enable=true 的列
-     * 3. 构建 List<List<String>> 格式的表头
-     * </p>
-     *
-     * @param titlesJson 前端传来的列配置 JSON
-     * @return 动态表头；null 表示使用注解表头
-     */
+    /** Parses client provided column definitions and builds an EasyExcel head. */
     default List<List<String>> parseDynamicHead(String titlesJson) {
         if (StringUtils.isBlank(titlesJson)) {
             return null;
@@ -100,28 +55,18 @@ public interface QueryExportDataService<C extends PageRequest, R> {
                 return null;
             }
 
-            // 过滤启用的列，构建表头
             return columns.stream()
                     .filter(col -> Boolean.TRUE.equals(col.getEnable()))
                     .map(col -> Collections.singletonList(col.getHeader()))
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
-            // 注意：接口中不能直接用 log，这里用 System.err 或让调用方处理
             System.err.println("[QueryExportDataService] Failed to parse dynamic head from titlesJson: " + e.getMessage());
             return null;
         }
     }
 
-    /**
-     * 生成行映射器（default 方法）
-     * <p>
-     * 根据 titlesJson 和业务提供的 fieldMapper，动态构建行数据
-     * </p>
-     *
-     * @param titlesJson 前端传来的列配置 JSON
-     * @return 行映射函数；null 表示使用注解表头
-     */
+    /** Builds a row mapper based on the provided column definition. */
     default Function<R, List<Object>> buildRowMapper(String titlesJson) {
         if (StringUtils.isBlank(titlesJson)) {
             return null;
@@ -138,25 +83,21 @@ public interface QueryExportDataService<C extends PageRequest, R> {
                 return null;
             }
 
-            // 过滤启用的列
             List<DownloadColumnDTO> enabledColumns = columns.stream()
                     .filter(col -> Boolean.TRUE.equals(col.getEnable()))
                     .collect(Collectors.toList());
 
-            // 获取业务提供的字段映射器
             Map<String, Function<R, Object>> fieldMapper = getFieldMapper();
 
-            // 构建行映射函数
             return (R dto) -> {
                 List<Object> row = new ArrayList<>(enabledColumns.size());
                 for (DownloadColumnDTO col : enabledColumns) {
                     Function<R, Object> getter = fieldMapper.get(col.getField());
                     if (getter != null) {
                         Object value = getter.apply(dto);
-                        // 应用格式化（日期、数字）
                         row.add(formatValue(value, col));
                     } else {
-                        row.add(null); // 未识别字段填 null
+                        row.add(null);
                     }
                 }
                 return row;
@@ -168,22 +109,12 @@ public interface QueryExportDataService<C extends PageRequest, R> {
         }
     }
 
-    /**
-     * 格式化值（default 方法，业务可重写）
-     * <p>
-     * 根据列配置的 dateFormat、numberFormat 进行格式化
-     * </p>
-     *
-     * @param value 原始值
-     * @param col   列配置
-     * @return 格式化后的值
-     */
+    /** Applies optional date/number formatting rules defined by the column. */
     default Object formatValue(Object value, DownloadColumnDTO col) {
         if (value == null) {
             return null;
         }
 
-        // 日期格式化
         if (StringUtils.isNotBlank(col.getDateFormat())) {
             if (value instanceof LocalDate) {
                 return LocalDateTimeUtils.convertLDToString((LocalDate) value, col.getDateFormat());
@@ -192,7 +123,6 @@ public interface QueryExportDataService<C extends PageRequest, R> {
             }
         }
 
-        // 数字格式化
         if (StringUtils.isNotBlank(col.getNumberFormat())) {
             if (value instanceof Number) {
                 DecimalFormat df = new DecimalFormat(col.getNumberFormat());

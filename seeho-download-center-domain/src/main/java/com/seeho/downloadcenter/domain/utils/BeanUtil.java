@@ -7,17 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Bean工具类
- *
- * @author Leonpo
- * @since 2025-12-02
+ * Lightweight wrappers around Spring's {@link BeanUtils}.
  */
 @Slf4j
 public class BeanUtil {
 
-    /**
-     * 复制Bean属性
-     */
     public static <T> T copy(Object source, Class<T> targetClass) {
         if (source == null) {
             return null;
@@ -32,9 +26,6 @@ public class BeanUtil {
         }
     }
 
-    /**
-     * 复制Bean列表
-     */
     public static <T> List<T> copyList(List<?> sourceList, Class<T> targetClass) {
         if (sourceList == null || sourceList.isEmpty()) {
             return new ArrayList<>();
@@ -46,4 +37,3 @@ public class BeanUtil {
         return targetList;
     }
 }
-

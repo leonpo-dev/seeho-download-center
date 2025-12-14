@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * JSON工具类
- *
- * @author Leonpo
- * @since 2025-12-02
+ * Simple wrapper around Jackson for serialization helpers.
  */
 @Slf4j
 public class JsonUtil {
@@ -48,4 +45,3 @@ public class JsonUtil {
         }
     }
 }
-
