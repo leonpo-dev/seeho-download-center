@@ -4,6 +4,7 @@ import com.seeho.downloadcenter.base.exception.BusinessException;
 import com.seeho.downloadcenter.base.enums.DownloadRefServiceEnum;
 import com.seeho.downloadcenter.domain.dotask.sendtask.SendTaskToMQService;
 import com.seeho.downloadcenter.persistence.po.DownloadLogPO;
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -74,6 +75,7 @@ public class InMemoryTaskQueueService implements SendTaskToMQService {
         }
     }
 
+    @PreDestroy
     public void shutdown() {
         log.info("[InMemoryTaskQueue] Shutting down delay scheduler...");
         delayScheduler.shutdown();

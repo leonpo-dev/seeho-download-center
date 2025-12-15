@@ -1,6 +1,7 @@
-package com.seeho.downloadcenter.domain.dotask.process;
+package com.seeho.downloadcenter.domain.dotask.process.consumer;
 
 import com.seeho.downloadcenter.base.exception.BusinessException;
+import com.seeho.downloadcenter.domain.dotask.process.DownloadTaskHandler;
 import com.seeho.downloadcenter.domain.dotask.sendtask.impl.InMemoryTaskQueueService;
 import com.seeho.downloadcenter.persistence.po.DownloadLogPO;
 import jakarta.annotation.Resource;
@@ -80,18 +81,7 @@ public class InMemoryTaskConsumer implements InitializingBean, DisposableBean {
 
                 log.info("[InMemoryTaskConsumer] Received task from memory queue, taskId={}, messageKey={}, threadName={}",
                         task.getId(), task.getMessageKey(), Thread.currentThread().getName());
-
-                try {
-                    downloadTaskHandler.handle(task);
-                    log.info("[InMemoryTaskConsumer] Task processed successfully, taskId={}", task.getId());
-
-                } catch (BusinessException e) {
-                    log.error("[InMemoryTaskConsumer] Business error, skip task. taskId={}", task.getId(), e);
-
-                } catch (Exception e) {
-                    log.error("[InMemoryTaskConsumer] System error, skip task. taskId={}", task.getId(), e);
-                }
-
+                downloadTaskHandler.handle(task);
             } catch (InterruptedException e) {
                 log.warn("[InMemoryTaskConsumer] Consumer thread interrupted, threadName={}", Thread.currentThread().getName());
                 Thread.currentThread().interrupt();
