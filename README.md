@@ -123,7 +123,16 @@ Additional design notes and analysis are provided in the repository, including:
 Please refer to the markdown documents in the repository root for details.
 
 ---
+## Contributing
 
+Contributions are welcome via issues and pull requests.
+Please note that this repository follows a review-based workflow,
+and direct pushes to the main branch are restricted.
+
+---
 ## License
 
 This project is licensed under the MIT License.
+
+
+
